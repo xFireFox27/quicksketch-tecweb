@@ -1,0 +1,60 @@
+// src/controllers/gameController.js
+const { Sketch, Word, GameSession } = require('../models');
+
+exports.makeGuess = async (req, res) => {
+    try {
+        const { sketchId } = req.params;
+        const { guess } = req.body; // La parola tentata dall'utente
+        const userId = req.user.id;
+
+        // 1. Recuperiamo lo sketch con la soluzione inclusa
+        const sketch = await Sketch.findByPk(sketchId, {
+            include: [{ model: Word, as: 'word' }]
+        });
+
+        if (!sketch) return res.status(404).json({ error: 'Sketch non trovato' });
+        if (sketch.authorId === userId) return res.status(400).json({ error: 'Non puoi giocare col tuo stesso disegno' });
+
+        // 2. Troviamo o creiamo la sessione di gioco per questo utente
+        let [session] = await GameSession.findOrCreate({
+            where: { playerId: userId, sketchId: sketch.id },
+            defaults: { attemptsCount: 0, guessedWords: [], status: 'playing' }
+        });
+
+        // Se l'utente ha già vinto o perso, lo blocchiamo
+        if (session.status !== 'playing') {
+            return res.status(400).json({ error: `Partita già terminata (Esito: ${session.status})` });
+        }
+
+        // 3. Elaborazione del tentativo
+        const isCorrect = guess.trim().toLowerCase() === sketch.word.testo.toLowerCase();
+        const newAttemptsCount = session.attemptsCount + 1;
+        let newStatus = 'playing';
+
+        if (isCorrect) {
+            newStatus = 'won';
+        } else if (newAttemptsCount >= 10) {
+            // Se la parola non viene indovinata in 10 tentativi, l'utente perde
+            newStatus = 'lost';
+        }
+
+        // 4. Aggiorniamo il database
+        session.attemptsCount = newAttemptsCount;
+        session.guessedWords = [...session.guessedWords, guess];
+        session.status = newStatus;
+        await session.save();
+
+        // 5. Prepariamo la risposta
+        res.json({
+            correct: isCorrect,
+            status: newStatus,
+            attempts: newAttemptsCount,
+            // Se l'utente perde, il sistema rivela la soluzione corretta
+            solution: newStatus === 'lost' ? sketch.word.testo : undefined
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Errore durante il tentativo' });
+    }
+};
