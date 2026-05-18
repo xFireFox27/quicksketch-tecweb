@@ -34,7 +34,7 @@ exports.getBestArtists = async (req, res) => {
             include: [{
                 model: Sketch,
                 as: 'sketches',
-                include: [{ model: GameSession, as: 'sketch' }] // attenzione all'alias 'sketch' usato nelle associazioni
+                include: [{ model: GameSession }] 
             }]
         });
 
@@ -44,8 +44,8 @@ exports.getBestArtists = async (req, res) => {
 
             // Analizziamo tutti gli sketch prodotti da questo utente
             user.sketches.forEach(sketch => {
-                // La proprietà 'sketch' qui dentro contiene l'array di GameSessions associate a questo disegno
-                const sessions = sketch.sketch || [];
+                // La proprietà 'GameSessions' qui dentro contiene l'array di GameSessions associate a questo disegno
+                const sessions = sketch.GameSessions || [];
                 sessions.forEach(session => {
                     totalGuesses++;
                     if (session.status === 'won') {
@@ -73,7 +73,7 @@ exports.getBestArtists = async (req, res) => {
 
         res.status(200).json(artistsStats);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Errore nel recupero dei migliori disegnatori' });
+        console.error("ERROR IN ARTISTS:", error);
+        res.status(500).json({ error: error.message || 'Errore nel recupero dei migliori disegnatori' });
     }
 };

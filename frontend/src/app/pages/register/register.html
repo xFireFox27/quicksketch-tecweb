@@ -1,0 +1,61 @@
+<div class="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border-t-4 border-green-500">
+    <h2 class="text-3xl font-extrabold text-slate-800 text-center mb-6">Crea un Account ✨</h2>
+    
+    @if (errorMessage) {
+      <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm text-center font-semibold">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label for="username" class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+        <input 
+          type="text" 
+          id="username" 
+          formControlName="username"
+          class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all"
+          placeholder="Scegli un username"
+        >
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password"
+          class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all focus:invalid:ring-red-500"
+          placeholder="Almeno 8 caratteri"
+        >
+        @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+          <div class="text-red-500 text-xs mt-1 space-y-1 font-medium">
+            @if (registerForm.get('password')?.errors?.['required']) {
+              <p>La password è obbligatoria.</p>
+            }
+            @if (registerForm.get('password')?.errors?.['minlength']) {
+              <p>La password deve avere almeno 8 caratteri.</p>
+            }
+            @if (registerForm.get('password')?.errors?.['pattern']) {
+              <p>Deve contenere almeno una maiuscola, una minuscola e un numero.</p>
+            }
+          </div>
+        }
+      </div>
+
+      <button 
+        type="submit" 
+        [disabled]="registerForm.invalid"
+        class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+      >
+        Registrati
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-slate-600">
+      Hai già un account? 
+      <a routerLink="/login" class="text-green-500 hover:underline font-bold">Accedi</a>
+    </p>
+  </div>
+</div>

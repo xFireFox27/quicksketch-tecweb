@@ -1,0 +1,83 @@
+<div class="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8 pt-10">
+
+    @if (isLoading) {
+    <div class="flex justify-center py-20">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    </div>
+    } @else if (!sketchData) {
+    <div class="bg-red-100 text-red-700 p-6 rounded-xl text-center font-bold">
+        {{ feedbackMessage }}
+        <br>
+        <a routerLink="/gallery" class="text-blue-500 underline mt-4 block">Torna alla Galleria</a>
+    </div>
+    } @else {
+
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-t-4 border-blue-500">
+
+        <div class="bg-slate-50 border-b border-slate-200 relative h-80 flex items-center justify-center p-4">
+            <img [src]="sketchData.canvasData" alt="Mistery Sketch"
+                class="max-w-full max-h-full object-contain mix-blend-multiply">
+        </div>
+
+        <div class="p-8">
+
+            @if (isOwner) {
+            <div class="bg-purple-50 text-purple-700 p-6 rounded-xl text-center border border-purple-200">
+                <p class="text-2xl font-bold mb-2">Questo è il tuo disegno!</p>
+                <p class="text-purple-600">Speriamo che gli altri membri della community riescano a indovinarlo!</p>
+            </div>
+            <div class="flex justify-center mt-6">
+                <a routerLink="/gallery"
+                    class="bg-slate-200 text-slate-700 font-bold py-3 px-8 rounded-xl hover:bg-slate-300 transition-colors">
+                    Torna alla Galleria
+                </a>
+            </div>
+            } @else if (gameStatus === 'guest') {
+            <div class="bg-blue-50 text-blue-800 p-6 rounded-xl flex flex-col justify-center items-center text-center border border-blue-200">
+                <h2 class="text-2xl font-bold mb-4">Vuoi provare a indovinare?</h2>
+                <p class="mb-6 opacity-80">{{ feedbackMessage }}</p>
+                <div class="flex gap-4">
+                  <a routerLink="/login" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-sm">Accedi</a>
+                  <a routerLink="/register" class="px-6 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm">Registrati</a>
+                </div>
+            </div>
+            } @else {
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Cosa rappresenta? 🤔</h2>
+
+                <div class="bg-slate-100 px-4 py-2 rounded-lg font-bold text-slate-600 border border-slate-200">
+                    Tentativi: <span [class.text-red-500]="attemptsLeft <= 3">{{ attemptsLeft }}/10</span>
+                </div>
+            </div>
+
+            @if (feedbackMessage) {
+            <div class="mb-6 p-4 rounded-xl font-bold text-center border" [class.bg-green-100]="gameStatus === 'won'"
+                [class.text-green-700]="gameStatus === 'won'" [class.border-green-300]="gameStatus === 'won'"
+                [class.bg-red-100]="gameStatus !== 'won'" [class.text-red-700]="gameStatus !== 'won'"
+                [class.border-red-300]="gameStatus !== 'won'">
+                {{ feedbackMessage }}
+            </div>
+            }
+
+            @if (gameStatus === 'playing') {
+            <form [formGroup]="guessForm" (ngSubmit)="onSubmitGuess()" class="flex gap-4">
+                <input type="text" formControlName="guess" placeholder="Scrivi la tua intuizione qui..."
+                    class="flex-1 px-4 py-3 border-2 border-slate-300 rounded-xl focus:ring-0 focus:border-blue-500 outline-none text-lg transition-colors">
+                <button type="submit" [disabled]="guessForm.invalid"
+                    class="bg-blue-500 text-white font-bold py-3 px-8 rounded-xl hover:bg-blue-600 transition-colors disabled:opacity-50 shadow-md text-lg">
+                    Indovina
+                </button>
+            </form>
+            } @else {
+            <div class="flex gap-4 justify-center mt-6">
+                <a routerLink="/gallery"
+                    class="bg-slate-200 text-slate-700 font-bold py-3 px-8 rounded-xl hover:bg-slate-300 transition-colors">
+                    Torna alla Galleria
+                </a>
+            </div>
+            }
+            }
+        </div>
+    </div>
+    }
+</div>

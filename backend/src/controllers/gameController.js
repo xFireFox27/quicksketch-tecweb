@@ -58,3 +58,33 @@ exports.makeGuess = async (req, res) => {
         res.status(500).json({ error: 'Errore durante il tentativo' });
     }
 };
+
+exports.getSession = async (req, res) => {
+    try {
+        const { sketchId } = req.params;
+        const userId = req.user.id;
+        
+        const session = await GameSession.findOne({
+            where: { playerId: userId, sketchId }
+        });
+
+        if (!session) {
+            return res.json({ status: 'playing', attemptsCount: 0 });
+        }
+
+        let solution;
+        if (session.status === 'lost' || session.status === 'won') {
+            const sketch = await Sketch.findByPk(sketchId, { include: [{ model: Word, as: 'word' }]});
+            if (sketch && sketch.word) solution = sketch.word.testo;
+        }
+
+        res.json({
+            status: session.status,
+            attemptsCount: session.attemptsCount,
+            solution
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Errore nel recupero della sessione di gioco' });
+    }
+};

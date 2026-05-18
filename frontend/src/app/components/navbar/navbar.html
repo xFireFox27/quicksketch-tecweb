@@ -1,0 +1,31 @@
+<nav class="glass-effect shadow-sm fixed w-full top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      <a routerLink="/" class="text-2xl font-extrabold text-slate-800">
+        Quick<span class="text-blue-500">Sketch</span>
+      </a>
+
+      <div class="flex space-x-4 items-center">
+        <a routerLink="/gallery" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2">Galleria</a>
+        <a routerLink="/leaderboard" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2">Classifiche</a>
+
+        @if (authService.isLoggedIn()) {
+          <a routerLink="/draw" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2">Disegna</a>
+          
+          <div class="border-l border-slate-300 mx-2 h-6"></div> 
+          
+          <a routerLink="/profile" class="text-slate-800 hover:text-blue-500 font-bold px-3 py-2 transition cursor-pointer flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+            Profilo ({{ authService.getUsername() }})
+          </a>
+        }
+        
+        @else {
+          <a routerLink="/login" class="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-lg font-bold transition">Accedi</a>
+        }
+      </div>
+    </div>
+  </div>
+</nav>

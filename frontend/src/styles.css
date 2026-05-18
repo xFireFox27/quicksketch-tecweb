@@ -1,0 +1,83 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+@import 'tailwindcss';
+
+/* --- STILI GLOBALI BASE --- */
+@layer base {
+  body {
+    /* Font giocoso e arrotondato al posto dell'inter base di tailwind */
+    font-family: 'Nunito', sans-serif;
+    color: #1e293b; /* text-slate-800 */
+    
+    /* Sfondo globale carino con un pattern sottilissimo */
+    background-color: #f8fafc;
+    background-image: 
+      radial-gradient(#e2e8f0 1.5px, transparent 1.5px),
+      radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+  }
+
+  /* Scrollbar personalizzata per sembrare un'app moderna */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+/* --- CLASSI DI UTILITÀ E ANIMAZIONI CUSTOM --- */
+@layer utilities {
+  
+  /* Animazione 'Blob' fluida per lo sfondo della Home */
+  .animate-blob {
+    animation: blob 8s infinite alternate;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(40px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-30px, 30px) scale(0.9);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  /* Effetto "Vetro" (Glassmorphism) per navbar o modali */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  /* Pattern a griglia per lo sfondo del Canvas di disegno */
+  .canvas-paper-pattern {
+    background-color: #ffffff;
+    background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}

@@ -1,0 +1,62 @@
+<div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pt-10">
+
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold text-slate-800 mb-4">Galleria della Community</h1>
+        <p class="text-lg text-slate-500">Esplora i capolavori o mettiti alla prova e indovina le parole nascoste!</p>
+    </div>
+
+    @if (isLoading) {
+    <div class="flex justify-center items-center py-20">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    </div>
+    }
+
+    @if (errorMessage) {
+    <div class="bg-red-100 text-red-700 p-4 rounded-xl text-center font-bold">
+        {{ errorMessage }}
+    </div>
+    }
+
+    @if (!isLoading && !errorMessage) {
+
+    @if (sketches.length === 0) {
+    <div class="text-center py-20 bg-white rounded-2xl shadow-sm border border-slate-200">
+        <p class="text-slate-500 text-xl mb-4">Nessun disegno presente al momento.</p>
+        <a routerLink="/draw" class="text-blue-500 font-bold hover:underline">Sii il primo a disegnare qualcosa!</a>
+    </div>
+    } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        @for (sketch of sketches; track sketch.id) {
+        <div
+            class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow border border-slate-100 flex flex-col">
+
+            <div class="bg-slate-50 border-b border-slate-100 relative h-64 flex items-center justify-center p-4">
+                <img [src]="sketch.canvasData" alt="Sketch"
+                    class="max-w-full max-h-full object-contain mix-blend-multiply">
+            </div>
+
+            <div class="p-5 flex flex-col flex-grow justify-between gap-4">
+                <div>
+                    <p class="text-sm text-slate-500">
+                        Creato da <span class="font-bold text-slate-700">{{ sketch.author?.username || 'Utente Anonimo'
+                            }}</span>
+                    </p>
+                    <p class="text-xs text-slate-400 mt-1">
+                        {{ sketch.createdAt | date:'short' }}
+                    </p>
+                </div>
+
+                <a [routerLink]="['/play', sketch.id]"
+                    class="w-full text-center bg-blue-50 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-500 hover:text-white transition-colors border border-blue-200 hover:border-blue-500">
+                    Prova a indovinare
+                </a>
+            </div>
+
+        </div>
+        }
+    </div>
+    }
+    }
+
+</div>
