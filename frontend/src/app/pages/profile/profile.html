@@ -81,6 +81,53 @@
       </div>
       }
       }
+
+      <!-- I Tuoi Disegni -->
+      <div class="mt-12 pt-8 border-t border-slate-200">
+        <h2 class="text-2xl font-extrabold text-slate-800 mb-6 flex items-center gap-2">
+          <span class="text-3xl">🎨</span> I tuoi capolavori
+        </h2>
+
+        @if (isLoadingSketches) {
+        <div class="flex justify-center items-center py-8">
+          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-500"></div>
+        </div>
+        }
+
+        @if (errorMessageSketches) {
+        <div class="bg-red-100 text-red-700 p-4 rounded-xl text-center font-bold">
+          {{ errorMessageSketches }}
+        </div>
+        }
+
+        @if (!isLoadingSketches && !errorMessageSketches) {
+          @if (mySketches.length === 0) {
+          <div class="text-center py-12 bg-slate-50 rounded-2xl shadow-sm border border-slate-200">
+            <p class="text-slate-500 text-lg mb-4">Non hai ancora creato nessun disegno.</p>
+            <a routerLink="/draw" class="text-purple-600 font-bold hover:underline">Inizia a disegnare ora!</a>
+          </div>
+          } @else {
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            @for (sketch of mySketches; track sketch.id) {
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-slate-200 flex flex-col">
+              <div class="bg-slate-50 border-b border-slate-100 relative h-48 flex items-center justify-center p-4">
+                <img [src]="sketch.canvasData" alt="Il tuo disegno" class="max-w-full max-h-full object-contain mix-blend-multiply">
+              </div>
+              <div class="p-4 flex flex-col flex-grow justify-between gap-3">
+                <p class="text-xs font-medium text-slate-400">
+                  Realizzato il {{ sketch.createdAt | date:'short' }}
+                </p>
+                <a [routerLink]="['/play', sketch.id]" class="w-full text-center bg-purple-50 text-purple-600 font-bold py-2 px-4 rounded-lg hover:bg-purple-500 hover:text-white transition-colors border border-purple-200 hover:border-purple-500 text-sm">
+                  Vedi disegno
+                </a>
+              </div>
+            </div>
+            }
+          </div>
+          }
+        }
+      </div>
+
     </div>
   </div>
 

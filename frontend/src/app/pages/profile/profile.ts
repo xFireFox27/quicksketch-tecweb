@@ -1,25 +1,30 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { StatsService, UserStats } from '../../services/stats';
 import { AuthService } from '../../services/auth';
+import { SketchService } from '../../services/sketch';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
 export class Profile implements OnInit {
   stats: UserStats | null = null;
+  mySketches: any[] = [];
   isLoading = true;
+  isLoadingSketches = true;
   errorMessage = '';
+  errorMessageSketches = '';
   username = '';
 
   constructor(
     private statsService: StatsService,
     private authService: AuthService,
+    private sketchService: SketchService,
     private cdr: ChangeDetectorRef,
     private router: Router
   ) {}
@@ -48,10 +53,24 @@ export class Profile implements OnInit {
         this.cdr.markForCheck();
       }
     });
+
+    this.sketchService.getAllSketches().subscribe({
+      next: (data) => {
+        this.mySketches = data.filter(s => s.author?.username === this.username);
+        this.isLoadingSketches = false;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Errore nel recupero dei disegni', err);
+        this.errorMessageSketches = 'Impossibile caricare i tuoi disegni.';
+        this.isLoadingSketches = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 }

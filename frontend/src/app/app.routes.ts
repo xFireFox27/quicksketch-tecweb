@@ -10,13 +10,13 @@ import { Profile } from './pages/profile/profile';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: Home },
-  { path: 'login', component: Login },
-  { path: 'register', component: Register },
-  { path: 'gallery', component: Gallery },
-  { path: 'leaderboard', component: Leaderboard },
-  { path: 'profile', component: Profile, canActivate: [AuthGuard] },
-  { path: 'draw', component: Draw, canActivate: [AuthGuard] },
-  { path: 'play/:id', component: Play }, 
+  { path: '', component: Home, title: 'QuickSketch - Home' },
+  { path: 'login', component: Login, title: 'QuickSketch - Login' },
+  { path: 'register', component: Register, title: 'QuickSketch - Register' },
+  { path: 'gallery', component: Gallery, title: 'QuickSketch - Gallery' },
+  { path: 'leaderboard', component: Leaderboard, title: 'QuickSketch - Leaderboard' },
+  { path: 'profile', component: Profile, canActivate: [AuthGuard], title: 'QuickSketch - Profile' },
+  { path: 'draw', component: Draw, canActivate: [AuthGuard], title: 'QuickSketch - Draw' },
+  { path: 'play/:id', component: Play, title: 'QuickSketch - Play' }, 
   { path: '**', redirectTo: '' } 
 ];

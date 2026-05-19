@@ -9,7 +9,17 @@ import { AuthService } from '../../services/auth';
   templateUrl: './navbar.html',
 })
 export class Navbar {
+  isMobileMenuOpen: boolean = false;
+
   constructor(public authService: AuthService, private router: Router) {}
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
 
   logout() {
     this.authService.logout(); // Cancella il token dal localStorage

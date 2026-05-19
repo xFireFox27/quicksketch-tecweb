@@ -28,6 +28,10 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
   timerInterval: any;
   isTimeUp: boolean = false;
 
+  // Variabili per l'Undo/Redo
+  private history: any[] = [];
+  private redoHistory: any[] = [];
+
   constructor(
     private sketchService: SketchService,
     private router: Router,
@@ -86,7 +90,70 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
       penColor: this.currentColor,
       backgroundColor: 'rgb(255, 255, 255)' 
     });
+
+    this.signaturePad.addEventListener('beginStroke', () => {
+      // Quando inizia un nuovo tratto, salviamo lo stato precedente
+      this.saveHistoryState();
+      // E puliamo la coda dei redo perché stiamo diramando la storia
+      this.redoHistory = [];
+    });
+
     this.resizeCanvas();
+  }
+
+  saveHistoryState() {
+    // Salviamo l'immagine intera per supportare sia SignaturePad che il secchiello
+    const dataUrl = this.canvasRef.nativeElement.toDataURL('image/png');
+    this.history.push(dataUrl);
+  }
+
+  undo() {
+    if (this.history.length === 0) return;
+    const currentState = this.canvasRef.nativeElement.toDataURL('image/png');
+    this.redoHistory.push(currentState);
+    
+    const previousState = this.history.pop();
+    this.restoreFromDataUrl(previousState);
+  }
+
+  redo() {
+    if (this.redoHistory.length === 0) return;
+    const currentState = this.canvasRef.nativeElement.toDataURL('image/png');
+    this.history.push(currentState);
+    
+    const nextState = this.redoHistory.pop();
+    this.restoreFromDataUrl(nextState);
+  }
+
+  hasUndo(): boolean {
+    return this.history.length > 0;
+  }
+
+  hasRedo(): boolean {
+    return this.redoHistory.length > 0;
+  }
+
+  private restoreFromDataUrl(dataUrl: string) {
+    const canvas = this.canvasRef.nativeElement;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    const img = new Image();
+    img.onload = () => {
+      // Svuota in modo pulito il SignaturePad
+      this.signaturePad.clear();
+      
+      // Reset della trasformazione del contesto (scala del device, es. retina display)
+      // altrimenti drawImage diseganerá due volte scalato l'immagine
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      // Ripristino la trasformazione iniziale per tratti futuri corretti
+      ctx.restore();
+    };
+    img.src = dataUrl;
   }
 
   @HostListener('window:resize')
@@ -169,6 +236,10 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
       return;
     }
 
+    // Salva lo stato prima di applicare il riempimento col secchiello
+    this.saveHistoryState();
+    this.redoHistory = [];
+
     const matchStartColor = (pos: number) => {
       return data[pos] === startR && data[pos + 1] === startG && data[pos + 2] === startB && data[pos + 3] === startA;
     };
@@ -235,6 +306,8 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
   }
 
   clear() {
+    this.saveHistoryState();
+    this.redoHistory = [];
     this.signaturePad.clear();
   }
 
