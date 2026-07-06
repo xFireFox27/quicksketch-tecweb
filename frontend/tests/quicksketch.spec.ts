@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 
-// Piccolo helper per simulare un login direttamente dal frontend.
-// Il servizio auth.ts legge l'username dal JWT, quindi ci basta salvare un token finto ma ben formato.
+// Helper per simulare un login direttamente dal frontend.
+// Il servizio auth.ts legge l'username dal JWT, quindi ci basta salvare un token finto.
 async function fastLoginOnlyFrontend(page: Page) {
   await page.goto('http://localhost:4200/');
   await page.evaluate(() => {
