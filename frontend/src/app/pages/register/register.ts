@@ -13,6 +13,7 @@ import { AuthService } from '../../services/auth';
 export class Register {
   registerForm: FormGroup;
   errorMessage: string = '';
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -46,5 +47,9 @@ export class Register {
         }
       });
     }
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

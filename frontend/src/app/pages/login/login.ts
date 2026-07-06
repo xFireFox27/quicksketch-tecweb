@@ -13,6 +13,7 @@ import { AuthService } from '../../services/auth';
 export class Login {
   loginForm: FormGroup;
   errorMessage: string = '';
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,5 +40,9 @@ export class Login {
         }
       });
     }
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }
