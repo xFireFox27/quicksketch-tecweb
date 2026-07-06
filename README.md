@@ -1,4 +1,4 @@
-# 🎨 QuickSketch
+# QuickSketch
 
 **QuickSketch** è un'applicazione web interattiva in stile Pictionary sviluppata come progetto per l'esame di **Tecnologie Web (A.A. 2025/2026)** presso l'Università degli Studi di Napoli Federico II.
 
@@ -6,7 +6,7 @@ Il gioco permette agli utenti di mettere alla prova la propria creatività diseg
 
 ---
 
-## ✨ Funzionalità Principali
+## Funzionalità Principali
 
 - **Sistema di Autenticazione:** Registrazione e Login sicuri con JWT (JSON Web Tokens) e password cifrate con bcrypt.
 - **Canvas di Disegno Avanzato:** Strumenti di disegno integrati (penne di vari spessori, colori personalizzati, gomma, secchiello/flood-fill) tramite `signature_pad` e HTML5 Canvas.
@@ -18,7 +18,7 @@ Il gioco permette agli utenti di mettere alla prova la propria creatività diseg
 
 ---
 
-## 🛠️ Tecnologie Utilizzate
+## Tecnologie Utilizzate
 
 ### Frontend
 - **Framework:** Angular 21 (Standalone Components)
@@ -35,11 +35,10 @@ Il gioco permette agli utenti di mettere alla prova la propria creatività diseg
 
 ### Testing
 - **E2E Testing:** Playwright (Test automatizzati del flusso UI)
-- **Unit Testing:** Vitest (Test isolati per frontend con simulazione JSDOM)
 
 ---
 
-## 🚀 Prerequisiti
+## Prerequisiti
 
 Per eseguire il progetto in locale, assicurati di avere installato:
 - [Node.js](https://nodejs.org/) (versione 18 o superiore consigliata)
@@ -91,15 +90,7 @@ Avvia l'applicazione Angular:
 
 ---
 
-## 🧪 Esecuzione dei Test
-
-Il progetto include due suite di test approfondite.
-
-### Test Unitari (Vitest)
-I test unitari verificano la logica interna dei servizi e dei componenti Angular.
-Per avviarli, posizionati nella cartella `frontend` ed esegui:
-
-    npm run test
+## Esecuzione dei Test
 
 ### Test End-to-End (Playwright)
 I test E2E simulano le azioni di un utente reale all'interno del browser (Registrazione, Login, Disegno, Navigazione) senza alterare il database di produzione grazie al Mocking delle API.
