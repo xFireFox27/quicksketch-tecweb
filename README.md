@@ -47,7 +47,7 @@ Per eseguire il progetto in locale, assicurati di avere installato:
 
 ---
 
-## ⚙️ Installazione e Avvio
+## Installazione e Avvio
 
 Il progetto è diviso in due cartelle principali: `frontend` e `backend`. Entrambi i server devono essere in esecuzione contemporaneamente.
 
