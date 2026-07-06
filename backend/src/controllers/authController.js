@@ -7,6 +7,11 @@ exports.register = async (req, res) => {
     try {
         const { username, password } = req.body;
 
+        const isValidUsername = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+        if (!isValidUsername) {
+            return res.status(400).json({ error: 'Username non valido. Usa solo lettere e numeri.' });
+        }
+
         // Controllo se l'utente esiste già
         const existingUser = await User.findOne({ where: { username } });
         if (existingUser) {
