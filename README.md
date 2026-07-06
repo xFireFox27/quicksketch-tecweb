@@ -101,4 +101,4 @@ Per avviarli, assicurati che sia il backend che il frontend siano in esecuzione,
 *(Aggiungi il flag `--headed` al comando per vedere il browser in azione, oppure `--ui` per l'interfaccia di debug).*
 
 ---
-**Sviluppato da:** [Tuo Nome e Cognome] - Matricola: [Tua Matricola]
+**Sviluppato da:** Carmine Amato - Matricola: N86005031
