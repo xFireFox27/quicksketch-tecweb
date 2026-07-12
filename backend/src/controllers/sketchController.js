@@ -1,10 +1,9 @@
-// src/controllers/sketchController.js
 const { Sketch, User, Word } = require('../models');
 
 exports.createSketch = async (req, res) => {
     try {
         const { canvasData, wordId } = req.body;
-        const authorId = req.user.id; // Preso dal middleware
+        const authorId = req.user.id;
 
         const newSketch = await Sketch.create({
             canvasData,
@@ -24,8 +23,7 @@ exports.getAllSketches = async (req, res) => {
         // Tutti possono vedere la raccolta degli sketch 
         const sketches = await Sketch.findAll({
             include: [
-                { model: User, as: 'author', attributes: ['username'] },
-                // Non includiamo la Word qui, altrimenti sveliamo la soluzione!
+                { model: User, as: 'author', attributes: ['username'] }
             ],
             order: [['createdAt', 'DESC']]
         });

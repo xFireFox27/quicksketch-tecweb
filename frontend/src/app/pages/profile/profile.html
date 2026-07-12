@@ -3,15 +3,18 @@
   <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
     <!-- Intestazione Profilo -->
     <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-center text-white relative">
-      <div class="w-24 h-24 bg-white rounded-full mx-auto flex items-center justify-center shadow-lg mb-4 text-4xl font-extrabold text-blue-600">
+      <div
+        class="w-24 h-24 bg-white rounded-full mx-auto flex items-center justify-center shadow-lg mb-4 text-4xl font-extrabold text-blue-600">
         {{ username ? username.charAt(0).toUpperCase() : '?' }}
       </div>
       <h1 class="text-3xl font-extrabold">{{ username || 'Utente' }}</h1>
       <p class="text-blue-100 mt-2 text-lg">Il tuo Profilo e le tue Statistiche</p>
-      
-      <button (click)="logout()" class="absolute top-4 right-4 bg-white/20 hover:bg-white/30 transition-colors text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2">
+
+      <button (click)="logout()"
+        class="absolute top-4 right-4 bg-white/20 hover:bg-white/30 transition-colors text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
         </svg>
         Esci
       </button>
@@ -33,50 +36,54 @@
 
       @if (!isLoading && !errorMessage && stats) {
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        
-        <div class="bg-blue-50 rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm border border-blue-100 transition-transform hover:scale-105">
+
+        <div
+          class="bg-blue-50 rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm border border-blue-100 transition-transform hover:scale-105">
           <div class="text-4xl form-bold text-blue-500 mb-2">🏆</div>
           <div class="text-3xl font-black text-slate-800">{{ stats.wordsGuessed }}</div>
           <div class="text-sm font-bold text-slate-500 uppercase tracking-wide mt-1">Parole Indovinate</div>
         </div>
 
-        <div class="bg-red-50 rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm border border-red-100 transition-transform hover:scale-105">
+        <div
+          class="bg-red-50 rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm border border-red-100 transition-transform hover:scale-105">
           <div class="text-4xl form-bold text-red-500 mb-2">❌</div>
           <div class="text-3xl font-black text-slate-800">{{ stats.wordsNotGuessed }}</div>
           <div class="text-sm font-bold text-slate-500 uppercase tracking-wide mt-1">Parole Fallite</div>
         </div>
 
-        <div class="bg-purple-50 rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm border border-purple-100 transition-transform hover:scale-105">
+        <div
+          class="bg-purple-50 rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm border border-purple-100 transition-transform hover:scale-105">
           <div class="text-4xl form-bold text-purple-500 mb-2">🎨</div>
           <div class="text-3xl font-black text-slate-800">{{ stats.drawingsProduced }}</div>
           <div class="text-sm font-bold text-slate-500 uppercase tracking-wide mt-1">Disegni Creati</div>
         </div>
 
-        <div class="bg-amber-50 rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm border border-amber-100 transition-transform hover:scale-105">
+        <div
+          class="bg-amber-50 rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-sm border border-amber-100 transition-transform hover:scale-105">
           <div class="text-4xl form-bold text-amber-500 mb-2">🔍</div>
           <div class="text-3xl font-black text-slate-800">{{ stats.totalAttemptsUsed }}</div>
           <div class="text-sm font-bold text-slate-500 uppercase tracking-wide mt-1">Tentativi Totali Usati</div>
         </div>
 
       </div>
-      
+
       <!-- Calcolo Win Rate Indovinate -->
       @if (stats.wordsGuessed + stats.wordsNotGuessed > 0) {
       <div class="mt-8 pt-8 border-t border-slate-100">
         <h3 class="text-lg font-bold text-slate-700 mb-4 text-center">Rapporto Vittorie come Giocatore</h3>
         <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden flex">
-          <div 
-            class="bg-green-500 h-4" 
+          <div class="bg-green-500 h-4"
             [style.width]="(stats.wordsGuessed / (stats.wordsGuessed + stats.wordsNotGuessed) * 100) + '%'">
           </div>
-          <div 
-            class="bg-red-500 h-4" 
+          <div class="bg-red-500 h-4"
             [style.width]="(stats.wordsNotGuessed / (stats.wordsGuessed + stats.wordsNotGuessed) * 100) + '%'">
           </div>
         </div>
         <div class="flex justify-between text-xs font-bold text-slate-500 mt-2">
-          <span>{{ (stats.wordsGuessed / (stats.wordsGuessed + stats.wordsNotGuessed) * 100).toFixed(0) }}% Vittorie</span>
-          <span>{{ (stats.wordsNotGuessed / (stats.wordsGuessed + stats.wordsNotGuessed) * 100).toFixed(0) }}% Sconfitte</span>
+          <span>{{ (stats.wordsGuessed / (stats.wordsGuessed + stats.wordsNotGuessed) * 100).toFixed(0) }}%
+            Vittorie</span>
+          <span>{{ (stats.wordsNotGuessed / (stats.wordsGuessed + stats.wordsNotGuessed) * 100).toFixed(0) }}%
+            Sconfitte</span>
         </div>
       </div>
       }
@@ -101,30 +108,33 @@
         }
 
         @if (!isLoadingSketches && !errorMessageSketches) {
-          @if (mySketches.length === 0) {
-          <div class="text-center py-12 bg-slate-50 rounded-2xl shadow-sm border border-slate-200">
-            <p class="text-slate-500 text-lg mb-4">Non hai ancora creato nessun disegno.</p>
-            <a routerLink="/draw" class="text-purple-600 font-bold hover:underline">Inizia a disegnare ora!</a>
-          </div>
-          } @else {
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            @for (sketch of mySketches; track sketch.id) {
-            <div class="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-slate-200 flex flex-col">
-              <div class="bg-slate-50 border-b border-slate-100 relative h-48 flex items-center justify-center p-4">
-                <img [src]="sketch.canvasData" alt="Il tuo disegno" class="max-w-full max-h-full object-contain mix-blend-multiply">
-              </div>
-              <div class="p-4 flex flex-col flex-grow justify-between gap-3">
-                <p class="text-xs font-medium text-slate-400">
-                  Realizzato il {{ sketch.createdAt | date:'short' }}
-                </p>
-                <a [routerLink]="['/play', sketch.id]" class="w-full text-center bg-purple-50 text-purple-600 font-bold py-2 px-4 rounded-lg hover:bg-purple-500 hover:text-white transition-colors border border-purple-200 hover:border-purple-500 text-sm">
-                  Vedi disegno
-                </a>
-              </div>
+        @if (mySketches.length === 0) {
+        <div class="text-center py-12 bg-slate-50 rounded-2xl shadow-sm border border-slate-200">
+          <p class="text-slate-500 text-lg mb-4">Non hai ancora creato nessun disegno.</p>
+          <a routerLink="/draw" class="text-purple-600 font-bold hover:underline">Inizia a disegnare ora!</a>
+        </div>
+        } @else {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          @for (sketch of mySketches; track sketch.id) {
+          <div
+            class="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow border border-slate-200 flex flex-col">
+            <div class="bg-slate-50 border-b border-slate-100 relative h-48 flex items-center justify-center p-4">
+              <img [src]="sketch.canvasData" alt="Il tuo disegno"
+                class="max-w-full max-h-full object-contain mix-blend-multiply">
             </div>
-            }
+            <div class="p-4 flex flex-col flex-grow justify-between gap-3">
+              <p class="text-xs font-medium text-slate-400">
+                Realizzato il {{ sketch.createdAt | date:'short' }}
+              </p>
+              <a [routerLink]="['/play', sketch.id]"
+                class="w-full text-center bg-purple-50 text-purple-600 font-bold py-2 px-4 rounded-lg hover:bg-purple-500 hover:text-white transition-colors border border-purple-200 hover:border-purple-500 text-sm">
+                Vedi disegno
+              </a>
+            </div>
           </div>
           }
+        </div>
+        }
         }
       </div>
 

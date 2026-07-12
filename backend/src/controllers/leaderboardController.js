@@ -1,4 +1,3 @@
-// src/controllers/leaderboardController.js
 const { User, Sketch, GameSession } = require('../models');
 const sequelize = require('../config/database');
 

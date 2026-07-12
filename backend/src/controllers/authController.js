@@ -1,4 +1,4 @@
-const { User } = require('../models'); // Grazie all'index.js, possiamo importare così!
+const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
             return res.status(400).json({ error: 'Username già in uso' });
         }
 
-        // Creiamo il nuovo utente (la password verrà cifrata in automatico dall'hook nel modello User)
+        // Creiamo il nuovo utente e criptiamo la password
         const newUser = await User.create({ username, password });
 
         res.status(201).json({

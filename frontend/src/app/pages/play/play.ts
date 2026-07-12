@@ -15,14 +15,14 @@ export class Play implements OnInit {
   sketchId: string | null = null;
   sketchData: any = null;
   isOwner = false;
-  
+
   guessForm: FormGroup;
-  
+
   // Gestione dello stato della partita
   isLoading = true;
   gameStatus: 'playing' | 'won' | 'lost' | 'guest' = 'playing';
   feedbackMessage = '';
-  attemptsLeft = 10; // Da traccia, l'utente ha 10 tentativi
+  attemptsLeft = 10;
 
   isGuest = false;
 
@@ -44,9 +44,9 @@ export class Play implements OnInit {
       this.gameStatus = 'guest';
     }
 
-    // Leggiamo l'ID dall'URL (es. /play/1)
+    // Leggiamo l'ID dall'URL
     this.sketchId = this.route.snapshot.paramMap.get('id');
-    
+
     if (this.sketchId) {
       this.loadSketch();
     } else {
@@ -59,7 +59,7 @@ export class Play implements OnInit {
     this.sketchService.getSketchById(this.sketchId!).subscribe({
       next: (data) => {
         this.sketchData = data;
-        
+
         if (this.isGuest) {
           this.feedbackMessage = 'Effettua il login per giocare e provare a indovinare.';
           this.isLoading = false;
@@ -120,7 +120,7 @@ export class Play implements OnInit {
           this.attemptsLeft--;
           this.feedbackMessage = `Sbagliato! La parola non è "${userGuess}".`;
           this.guessForm.reset();
-          
+
           if (this.attemptsLeft <= 0) {
             this.gameStatus = 'lost';
             this.feedbackMessage = 'Hai esaurito i tentativi! Game Over.';

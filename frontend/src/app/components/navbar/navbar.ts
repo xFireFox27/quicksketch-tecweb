@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth';
 export class Navbar {
   isMobileMenuOpen: boolean = false;
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router) { }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -22,7 +22,7 @@ export class Navbar {
   }
 
   logout() {
-    this.authService.logout(); // Cancella il token dal localStorage
-    this.router.navigate(['/login']); // Ti riporta alla pagina di login
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

@@ -8,14 +8,12 @@ const statsController = require('../controllers/statsController');
 const wordController = require('../controllers/wordController');
 
 // --- ROTTE PUBBLICHE ---
-// Accessibili a tutti gli utenti (anche non registrati)
 router.get('/sketches', sketchController.getAllSketches);
 router.get('/sketches/:id', sketchController.getSketchById);
 router.get('/leaderboards/players', leaderboardController.getBestPlayers);
 router.get('/leaderboards/artists', leaderboardController.getBestArtists);
 
-// --- ROTTE PROTETTE ---
-// Da qui in poi, il token JWT è obbligatorio
+// --- ROTTE PROTETTE (JWT) ---
 router.use(authMiddleware);
 
 router.post('/sketches', sketchController.createSketch);

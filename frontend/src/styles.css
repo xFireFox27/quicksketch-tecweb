@@ -6,11 +6,10 @@
 /* --- STILI GLOBALI BASE --- */
 @layer base {
   body {
-    /* Font giocoso e arrotondato al posto dell'inter base di tailwind */
     font-family: 'Nunito', sans-serif;
     color: #1e293b; /* text-slate-800 */
     
-    /* Sfondo globale carino con un pattern sottilissimo */
+    /* Sfondo globale */
     background-color: #f8fafc;
     background-image: 
       radial-gradient(#e2e8f0 1.5px, transparent 1.5px),
@@ -19,7 +18,7 @@
     background-position: 0 0, 20px 20px;
   }
 
-  /* Scrollbar personalizzata per sembrare un'app moderna */
+  /* Scrollbar personalizzata */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -40,7 +39,7 @@
 /* --- CLASSI DI UTILITÀ E ANIMAZIONI CUSTOM --- */
 @layer utilities {
   
-  /* Animazione 'Blob' fluida per lo sfondo della Home */
+  /* Animazione per lo sfondo della Home */
   .animate-blob {
     animation: blob 8s infinite alternate;
   }
@@ -66,7 +65,7 @@
     }
   }
 
-  /* Effetto "Vetro" (Glassmorphism) per navbar o modali */
+  /* Effetto "Vetro" per navbar o modali */
   .glass-effect {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);

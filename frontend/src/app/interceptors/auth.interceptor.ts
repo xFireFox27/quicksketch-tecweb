@@ -3,7 +3,6 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-    // Usiamo inject per recuperare il nostro servizio di autenticazione
     const authService = inject(AuthService);
     const token = authService.getToken();
 

@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class LeaderboardService {
   private apiUrl = `${environment.apiUrl}/leaderboards`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getBestPlayers(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/players`);

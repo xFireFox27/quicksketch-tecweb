@@ -27,7 +27,7 @@ export class Profile implements OnInit {
     private sketchService: SketchService,
     private cdr: ChangeDetectorRef,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (!this.authService.isLoggedIn()) {

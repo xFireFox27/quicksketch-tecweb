@@ -8,11 +8,11 @@ const Sketch = sequelize.define('Sketch', {
         autoIncrement: true
     },
     canvasData: {
-        type: DataTypes.TEXT, // Usiamo TEXT per supportare Base64 o JSON vettoriale lunghi
+        type: DataTypes.TEXT,
         allowNull: false
     }
 }, {
-    timestamps: true, // Questo genera automaticamente 'createdAt' e 'updatedAt'
+    timestamps: true,
 });
 
 module.exports = Sketch;

@@ -18,7 +18,7 @@ export class Leaderboard implements OnInit {
   constructor(
     private leaderboardService: LeaderboardService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.fetchData();

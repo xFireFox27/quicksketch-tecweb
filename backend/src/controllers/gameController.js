@@ -1,13 +1,12 @@
-// src/controllers/gameController.js
 const { Sketch, Word, GameSession } = require('../models');
 
 exports.makeGuess = async (req, res) => {
     try {
         const { sketchId } = req.params;
-        const { guess } = req.body; // La parola tentata dall'utente
+        const { guess } = req.body;
         const userId = req.user.id;
 
-        // 1. Recuperiamo lo sketch con la soluzione inclusa
+        // Recuperiamo lo sketch con la soluzione inclusa
         const sketch = await Sketch.findByPk(sketchId, {
             include: [{ model: Word, as: 'word' }]
         });
@@ -15,7 +14,7 @@ exports.makeGuess = async (req, res) => {
         if (!sketch) return res.status(404).json({ error: 'Sketch non trovato' });
         if (sketch.authorId === userId) return res.status(400).json({ error: 'Non puoi giocare col tuo stesso disegno' });
 
-        // 2. Troviamo o creiamo la sessione di gioco per questo utente
+        // Troviamo o creiamo la sessione di gioco per questo utente
         let [session] = await GameSession.findOrCreate({
             where: { playerId: userId, sketchId: sketch.id },
             defaults: { attemptsCount: 0, guessedWords: [], status: 'playing' }
@@ -26,7 +25,7 @@ exports.makeGuess = async (req, res) => {
             return res.status(400).json({ error: `Partita già terminata (Esito: ${session.status})` });
         }
 
-        // 3. Elaborazione del tentativo
+        // Elaborazione del tentativo
         const isCorrect = guess.trim().toLowerCase() === sketch.word.testo.toLowerCase();
         const newAttemptsCount = session.attemptsCount + 1;
         let newStatus = 'playing';
@@ -38,13 +37,13 @@ exports.makeGuess = async (req, res) => {
             newStatus = 'lost';
         }
 
-        // 4. Aggiorniamo il database
+        // Aggiorniamo il database
         session.attemptsCount = newAttemptsCount;
         session.guessedWords = [...session.guessedWords, guess];
         session.status = newStatus;
         await session.save();
 
-        // 5. Prepariamo la risposta
+        // Mandiamo la risposta al client
         res.json({
             correct: isCorrect,
             status: newStatus,
@@ -63,21 +62,25 @@ exports.getSession = async (req, res) => {
     try {
         const { sketchId } = req.params;
         const userId = req.user.id;
-        
+
+        // Recuperiamo la sessione di gioco per questo utente e sketch
         const session = await GameSession.findOne({
             where: { playerId: userId, sketchId }
         });
 
+        // Se non esiste una sessione, significa che l'utente non ha ancora iniziato a giocare
         if (!session) {
             return res.json({ status: 'playing', attemptsCount: 0 });
         }
 
+        // Se la sessione esiste, restituiamo lo stato attuale e il numero di tentativi
         let solution;
         if (session.status === 'lost' || session.status === 'won') {
-            const sketch = await Sketch.findByPk(sketchId, { include: [{ model: Word, as: 'word' }]});
+            const sketch = await Sketch.findByPk(sketchId, { include: [{ model: Word, as: 'word' }] });
             if (sketch && sketch.word) solution = sketch.word.testo;
         }
 
+        // Restituiamo lo stato della sessione e il numero di tentativi effettuati
         res.json({
             status: session.status,
             attemptsCount: session.attemptsCount,

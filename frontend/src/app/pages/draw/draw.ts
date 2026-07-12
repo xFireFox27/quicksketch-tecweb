@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, HostListener, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import SignaturePad from 'signature_pad';
 import { SketchService } from '../../services/sketch';
 
@@ -18,13 +18,13 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
   currentColor = '#000000';
   isEraser = false;
   isBucket = false;
-  
+
   // Variabili per gestire le parole
   wordToDraw: any = null;
   isLoadingWord = true;
 
   // Variabili per il timer
-  timeLeft: number = 60; // 60 secondi
+  timeLeft: number = 60;
   timerInterval: any;
   isTimeUp: boolean = false;
 
@@ -36,10 +36,10 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
     private sketchService: SketchService,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
-    // Al caricamento, chiediamo le parole al backend
+    // Chiediamo le parole al backend
     this.sketchService.getWords().subscribe({
       next: (words) => {
         // Scegliamo una parola a caso dall'array
@@ -69,7 +69,7 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
       } else {
         this.stopTimer();
         this.isTimeUp = true;
-        this.signaturePad.off(); // Disabilita il disegno
+        this.signaturePad.off();
         this.cdr.markForCheck();
         alert('Tempo scaduto! Il tuo disegno verrà pubblicato adesso.');
         this.saveSketch();
@@ -88,13 +88,13 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
       minWidth: 2,
       maxWidth: 4,
       penColor: this.currentColor,
-      backgroundColor: 'rgb(255, 255, 255)' 
+      backgroundColor: 'rgb(255, 255, 255)'
     });
 
     this.signaturePad.addEventListener('beginStroke', () => {
       // Quando inizia un nuovo tratto, salviamo lo stato precedente
       this.saveHistoryState();
-      // E puliamo la coda dei redo perché stiamo diramando la storia
+      // Resettiamo la cronologia di redo perché non è più valida dopo un nuovo tratto
       this.redoHistory = [];
     });
 
@@ -102,7 +102,7 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
   }
 
   saveHistoryState() {
-    // Salviamo l'immagine intera per supportare sia SignaturePad che il secchiello
+    // Salviamo lo stato corrente della canvas come immagine in base64
     const dataUrl = this.canvasRef.nativeElement.toDataURL('image/png');
     this.history.push(dataUrl);
   }
@@ -111,7 +111,7 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
     if (this.history.length === 0) return;
     const currentState = this.canvasRef.nativeElement.toDataURL('image/png');
     this.redoHistory.push(currentState);
-    
+
     const previousState = this.history.pop();
     this.restoreFromDataUrl(previousState);
   }
@@ -120,7 +120,7 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
     if (this.redoHistory.length === 0) return;
     const currentState = this.canvasRef.nativeElement.toDataURL('image/png');
     this.history.push(currentState);
-    
+
     const nextState = this.redoHistory.pop();
     this.restoreFromDataUrl(nextState);
   }
@@ -133,41 +133,39 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
     return this.redoHistory.length > 0;
   }
 
+  // Funzione per ripristinare lo stato della canvas da un'immagine in base64
   private restoreFromDataUrl(dataUrl: string) {
     const canvas = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
+
     const img = new Image();
     img.onload = () => {
-      // Svuota in modo pulito il SignaturePad
       this.signaturePad.clear();
-      
-      // Reset della trasformazione del contesto (scala del device, es. retina display)
-      // altrimenti drawImage diseganerá due volte scalato l'immagine
+
       ctx.save();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      
+
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      
-      // Ripristino la trasformazione iniziale per tratti futuri corretti
+
       ctx.restore();
     };
     img.src = dataUrl;
   }
 
+  // Gestione del ridimensionamento della canvas
   @HostListener('window:resize')
   resizeCanvas() {
     const canvas = this.canvasRef.nativeElement;
     const ratio = Math.max(window.devicePixelRatio || 1, 1);
     const data = this.signaturePad.toData();
-    
+
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
     canvas.getContext('2d')?.scale(ratio, ratio);
-    
+
     this.signaturePad.clear();
-    
+
     if (data && data.length > 0) {
       this.signaturePad.fromData(data);
     }
@@ -179,7 +177,7 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
     this.isBucket = false;
     this.currentColor = color;
     this.signaturePad.penColor = color;
-    this.signaturePad.on(); // Riattiva il disegno
+    this.signaturePad.on();
   }
 
   onCustomColorChange(event: Event) {
@@ -193,14 +191,14 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
     this.isEraser = true;
     this.isBucket = false;
     this.signaturePad.penColor = 'rgb(255, 255, 255)';
-    this.signaturePad.on(); // Riattiva il disegno
+    this.signaturePad.on();
   }
 
   setBucket() {
     if (this.isTimeUp) return;
     this.isBucket = true;
     this.isEraser = false;
-    this.signaturePad.off(); // Disabilita il disegno a mano libera
+    this.signaturePad.off();
   }
 
   // --- FLOOD FILL ALGORITHM ---
@@ -217,7 +215,7 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
 
     const rect = canvas.getBoundingClientRect();
     const ratio = Math.max(window.devicePixelRatio || 1, 1);
-    
+
     const x = Math.floor((event.clientX - rect.left) * (canvas.width / rect.width));
     const y = Math.floor((event.clientY - rect.top) * (canvas.height / rect.height));
 
@@ -322,8 +320,8 @@ export class Draw implements AfterViewInit, OnInit, OnDestroy {
     }
 
     const base64Image = this.signaturePad.toDataURL('image/png');
-    
-    // Inviamo i dati veri al backend!
+
+    // Inviamo il disegno al backend per salvarlo nel database
     this.sketchService.createSketch(this.wordToDraw.id, base64Image).subscribe({
       next: (res) => {
         console.log('Disegno salvato con successo sul DB!', res);

@@ -11,20 +11,22 @@
         <a routerLink="/leaderboard" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2">Classifiche</a>
 
         @if (authService.isLoggedIn()) {
-          <a routerLink="/draw" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2">Disegna</a>
-          
-          <div class="border-l border-slate-300 mx-2 h-6"></div> 
-          
-          <a routerLink="/profile" class="text-slate-800 hover:text-blue-500 font-bold px-3 py-2 transition cursor-pointer flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-            </svg>
-            Profilo ({{ authService.getUsername() }})
-          </a>
+        <a routerLink="/draw" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2">Disegna</a>
+
+        <div class="border-l border-slate-300 mx-2 h-6"></div>
+
+        <a routerLink="/profile"
+          class="text-slate-800 hover:text-blue-500 font-bold px-3 py-2 transition cursor-pointer flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          Profilo ({{ authService.getUsername() }})
+        </a>
         }
-        
+
         @else {
-          <a routerLink="/login" class="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-lg font-bold transition">Accedi</a>
+        <a routerLink="/login"
+          class="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-lg font-bold transition">Accedi</a>
         }
       </div>
 
@@ -33,9 +35,9 @@
         <button (click)="toggleMobileMenu()" class="text-slate-600 hover:text-slate-800 focus:outline-none">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             @if (isMobileMenuOpen) {
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             } @else {
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             }
           </svg>
         </button>
@@ -45,26 +47,31 @@
 
   <!-- Mobile Menu Dropdown -->
   @if (isMobileMenuOpen) {
-    <div class="md:hidden bg-white border-t border-slate-100 shadow-md">
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
-        <a routerLink="/gallery" (click)="closeMobileMenu()" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2 rounded-md">Galleria</a>
-        <a routerLink="/leaderboard" (click)="closeMobileMenu()" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2 rounded-md">Classifiche</a>
+  <div class="md:hidden bg-white border-t border-slate-100 shadow-md">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+      <a routerLink="/gallery" (click)="closeMobileMenu()"
+        class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2 rounded-md">Galleria</a>
+      <a routerLink="/leaderboard" (click)="closeMobileMenu()"
+        class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2 rounded-md">Classifiche</a>
 
-        @if (authService.isLoggedIn()) {
-          <a routerLink="/draw" (click)="closeMobileMenu()" class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2 rounded-md">Disegna</a>
-          <div class="border-t border-slate-200 my-1"></div>
-          <a routerLink="/profile" (click)="closeMobileMenu()" class="text-slate-800 hover:text-blue-500 font-bold px-3 py-2 rounded-md flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-            </svg>
-            Profilo ({{ authService.getUsername() }})
-          </a>
-        }
-        @else {
-          <div class="border-t border-slate-200 my-1"></div>
-          <a routerLink="/login" (click)="closeMobileMenu()" class="bg-blue-500 text-white hover:bg-blue-600 px-3 py-2 rounded-md font-bold transition text-center mt-2">Accedi</a>
-        }
-      </div>
+      @if (authService.isLoggedIn()) {
+      <a routerLink="/draw" (click)="closeMobileMenu()"
+        class="text-slate-600 hover:text-blue-500 font-medium px-3 py-2 rounded-md">Disegna</a>
+      <div class="border-t border-slate-200 my-1"></div>
+      <a routerLink="/profile" (click)="closeMobileMenu()"
+        class="text-slate-800 hover:text-blue-500 font-bold px-3 py-2 rounded-md flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+        Profilo ({{ authService.getUsername() }})
+      </a>
+      }
+      @else {
+      <div class="border-t border-slate-200 my-1"></div>
+      <a routerLink="/login" (click)="closeMobileMenu()"
+        class="bg-blue-500 text-white hover:bg-blue-600 px-3 py-2 rounded-md font-bold transition text-center mt-2">Accedi</a>
+      }
     </div>
+  </div>
   }
 </nav>

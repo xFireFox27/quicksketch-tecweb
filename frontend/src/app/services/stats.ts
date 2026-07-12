@@ -16,7 +16,7 @@ export interface UserStats {
 export class StatsService {
   private apiUrl = `${environment.apiUrl}/stats`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getMyStats(): Observable<UserStats> {
     return this.http.get<UserStats>(`${this.apiUrl}/me`);

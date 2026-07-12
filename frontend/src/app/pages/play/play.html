@@ -33,12 +33,15 @@
                 </a>
             </div>
             } @else if (gameStatus === 'guest') {
-            <div class="bg-blue-50 text-blue-800 p-6 rounded-xl flex flex-col justify-center items-center text-center border border-blue-200">
+            <div
+                class="bg-blue-50 text-blue-800 p-6 rounded-xl flex flex-col justify-center items-center text-center border border-blue-200">
                 <h2 class="text-2xl font-bold mb-4">Vuoi provare a indovinare?</h2>
                 <p class="mb-6 opacity-80">{{ feedbackMessage }}</p>
                 <div class="flex gap-4">
-                  <a routerLink="/login" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-sm">Accedi</a>
-                  <a routerLink="/register" class="px-6 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm">Registrati</a>
+                    <a routerLink="/login"
+                        class="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-sm">Accedi</a>
+                    <a routerLink="/register"
+                        class="px-6 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition shadow-sm">Registrati</a>
                 </div>
             </div>
             } @else {
